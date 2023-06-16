@@ -1,55 +1,58 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, RefreshControl, Text, View } from 'react-native'
-import { useHttp } from '../hooks/http.hook'
-import { ICategory, IProduct, ISubCategory } from '../types/ICatalog'
-import Loader from '../components/UI/Loader/Loader'
-import { CatalogCategoryItem } from '../components/Catalog/CatalogCategoryItem'
-import { NavigationContainer } from '@react-navigation/native'
+import React from 'react';
+import {IProduct, ISubCategory} from '../types/ICatalog';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { Test } from '../components/Test'
-import { CatalogScreen } from '../components/Catalog/CatalogScreen'
-import { colors } from '../assets/style/_colors'
-import { CatalogProductScreen } from '../components/Catalog/CatalogProductScreen'
+import {CatalogScreen} from '../components/Catalog/CatalogScreen';
+import {CatalogProductListScreen} from '../components/Catalog/CatalogProductListScreen';
+import {ProductDetail} from '../components/Catalog/ProductDetail';
+import {headerDefaultStyle} from '../assets/const/headerDefaultStyle';
 
 export type CatalogParamList = {
-  Catalog: undefined,
-  SubCategories: { subCategories: ISubCategory[] },
-  Products: {subCategoryId: string}
-  DetailProduct: { productData: IProduct }
-}
+  Catalog: undefined;
+  SubCategories: {parentName: string; subCategories: ISubCategory[]};
+  Products: {parentName: string; subCategoryId: string};
+  ProductDetail: {name: string; productData: IProduct};
+};
 
 export const CatalogScreenNav = () => {
-  const Catalog = createNativeStackNavigator<CatalogParamList>()
+  const Catalog = createNativeStackNavigator<CatalogParamList>();
 
   return (
-  <NavigationContainer independent={true}>
-    <Catalog.Navigator>
-      <Catalog.Screen name="Catalog" component={CatalogScreen} options={{        
-        headerStyle: {
-          backgroundColor: colors.secondColor,
-        },
-        headerTintColor: colors.firstColor,
-        headerTitleAlign: 'center',
-        headerTitle: 'Каталог'
-      }}/>
-      <Catalog.Screen name="SubCategories" component={CatalogScreen} options={{
-        headerStyle: {
-          backgroundColor: colors.secondColor,
-        },
-        headerTintColor: colors.firstColor,
-        headerTitleAlign: 'center',
-        headerTitle: 'Подкатегория'
-      }}/>
-      <Catalog.Screen name="Products" component={CatalogProductScreen} options={{
-        headerStyle: {
-          backgroundColor: colors.secondColor,
-        },
-        headerTintColor: colors.firstColor,
-        headerTitleAlign: 'center',
-        headerTitle: 'Товары'
-      }}/>
-      <Catalog.Screen name="DetailProduct" component={Test} />
-    </Catalog.Navigator>
-  </NavigationContainer>
-  )
-}
+    <NavigationContainer independent>
+      <Catalog.Navigator>
+        <Catalog.Screen
+          name="Catalog"
+          component={CatalogScreen}
+          options={{
+            ...headerDefaultStyle,
+            headerTitle: 'Каталог',
+          }}
+        />
+        <Catalog.Screen
+          name="SubCategories"
+          component={CatalogScreen}
+          options={({route}) => ({
+            ...headerDefaultStyle,
+            title: route.params.parentName,
+          })}
+        />
+        <Catalog.Screen
+          name="Products"
+          component={CatalogProductListScreen}
+          options={({route}) => ({
+            ...headerDefaultStyle,
+            title: route.params.parentName,
+          })}
+        />
+        <Catalog.Screen
+          name="ProductDetail"
+          component={ProductDetail}
+          options={({route}) => ({
+            ...headerDefaultStyle,
+            title: route.params.name,
+          })}
+        />
+      </Catalog.Navigator>
+    </NavigationContainer>
+  );
+};
