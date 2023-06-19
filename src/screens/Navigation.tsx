@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../assets/style/_colors';
 import { HomeHeader } from '../components/Header/HomeHeader';
 import { HomeScreen } from './HomeScreen';
-import { BasketSkreen } from './BasketScreen';
+import { BasketScreen } from './BasketScreen';
 import { CatalogScreenNav } from './CatalogScreenNav';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { getBasketItems } from '../redux/slices/basket';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import BasketService from '../services/basket-service';
 
 export const Navigation = () => {
   const Tab = createBottomTabNavigator();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const basketItemsCounter = useSelector(
+    (state: RootState) => state.basketSlice.basketItems.length,
+  );
+  const basketItems = useSelector(
+    (state: RootState) => state.basketSlice.basketItems,
+  );
+  const updatedFromLocalStorage = useSelector(
+    (state: RootState) => state.basketSlice.updatedFromLocalStorage,
+  );
+
+  useEffect(() => {
+    dispatch(getBasketItems());
+  }, []);
+
+  //ПРОВЕРИТЬ БУДЕТ ЛИ РАБОТАТЬ ПРИ СМНЕНЕ ТОТАЛА
+  useEffect(() => {
+    if (updatedFromLocalStorage) BasketService.saveToAsyncStorage(basketItems);
+  }, [updatedFromLocalStorage, basketItems]);
 
   return (
     <NavigationContainer>
@@ -60,10 +84,11 @@ export const Navigation = () => {
         />
         <Tab.Screen
           name="Basket"
-          component={BasketSkreen}
+          component={BasketScreen}
           options={{
             ...headerDefaultStyle,
-            tabBarBadge: 3,
+            tabBarBadge:
+              basketItemsCounter > 0 ? basketItemsCounter : undefined,
             tabBarBadgeStyle: {
               backgroundColor: colors.firstColor,
               color: colors.secondColor,

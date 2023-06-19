@@ -1,10 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {IProduct} from '../../types/ICatalog';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CatalogParamList} from '../../screens/CatalogScreenNav';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppDispatch, RootState } from '../../redux/store';
+import { CatalogParamList } from '../../screens/CatalogScreenNav';
 import Loader from '../UI/Loader/Loader';
-import {colors} from '../../assets/style/_colors';
+import BasketService from '../../services/basket-service';
+import { toggleBasketItem } from '../../redux/slices/basket';
+import { colors } from '../../assets/style/_colors';
+import { IProduct } from '../../types/ICatalog';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
   CatalogParamList,
@@ -19,8 +30,22 @@ type Props = {
     };
   };
 };
-export const ProductDetail = ({route, navigation}: Props) => {
+export const ProductDetail = ({ route, navigation }: Props) => {
   const [productData, setProductData] = useState<IProduct>();
+  const inBasket = useSelector((state: RootState) => {
+    if (!productData?._id) return false;
+    return BasketService.inBasket(
+      state.basketSlice.basketItems,
+      productData?._id,
+    );
+  });
+  const dispatch = useDispatch<AppDispatch>();
+
+  const toggleBasketHendler = useCallback(async () => {
+    if (productData?._id) {
+      dispatch(toggleBasketItem(productData._id));
+    }
+  }, [productData]);
 
   useEffect(() => {
     if (route.params?.productData) setProductData(route.params.productData);
@@ -41,7 +66,11 @@ export const ProductDetail = ({route, navigation}: Props) => {
         <Text style={styles.title}>{productData.name}</Text>
         <View style={styles.productMiddleWrapper}>
           <Text style={styles.price}>{productData.price + 'р.'}</Text>
-          <Button title="Добавить в корзину" color={colors.secondColor} />
+          <Button
+            title={inBasket ? 'Удалить из корзины' : 'Добавить в корзину'}
+            color={colors.secondColor}
+            onPress={() => toggleBasketHendler()}
+          />
         </View>
         <Text style={styles.description}>
           {productData.description || 'Нет описания'}

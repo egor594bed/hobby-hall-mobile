@@ -12,3 +12,7 @@ export interface IPayment {
   imgName: string;
   text: string;
 }
+
+export type BasketItem = [string, number];
+
+export type BasketItemsPromise = Promise<BasketItem[] | null>;
