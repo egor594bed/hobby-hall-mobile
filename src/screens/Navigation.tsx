@@ -13,6 +13,7 @@ import { getBasketItems } from '../redux/slices/basket';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import BasketService from '../services/basket-service';
+import { SearchScreen } from './SearchScreen';
 
 export const Navigation = () => {
   const Tab = createBottomTabNavigator();
@@ -50,6 +51,8 @@ export const Navigation = () => {
               iconName = focused ? 'basket' : 'basket-outline';
             } else if (route.name === 'CatalogNav') {
               iconName = focused ? 'list' : 'list-outline';
+            } else if (route.name === 'Search') {
+              iconName = focused ? 'search' : 'search-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -63,14 +66,6 @@ export const Navigation = () => {
           },
         })}>
         <Tab.Screen
-          name="CatalogNav"
-          component={CatalogScreenNav}
-          options={{
-            headerShown: false,
-            tabBarLabel: 'Каталог',
-          }}
-        />
-        <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
@@ -80,6 +75,14 @@ export const Navigation = () => {
             },
             headerTitleAlign: 'center',
             tabBarLabel: 'Главная',
+          }}
+        />
+        <Tab.Screen
+          name="CatalogNav"
+          component={CatalogScreenNav}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Каталог',
           }}
         />
         <Tab.Screen
@@ -95,6 +98,19 @@ export const Navigation = () => {
             },
             tabBarLabel: 'Корзина',
             headerTitle: 'Корзина',
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{
+            ...headerDefaultStyle,
+            tabBarBadgeStyle: {
+              backgroundColor: colors.firstColor,
+              color: colors.secondColor,
+            },
+            tabBarLabel: 'Поиск',
+            headerTitle: 'Поиск',
           }}
         />
       </Tab.Navigator>
