@@ -1,12 +1,30 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { View, TextInput, StyleSheet, FlatList, Text } from 'react-native';
-import { colors } from '../assets/style/_colors';
-import { useHttp } from '../hooks/http.hook';
-import { IProduct } from '../types/ICatalog';
-import { CatalogProductItem } from '../components/Catalog/CatalogProductItem';
-import Loader from '../components/UI/Loader/Loader';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { colors } from '../../assets/style/_colors';
+import { useHttp } from '../../hooks/http.hook';
+import { IProduct } from '../../types/ICatalog';
+import { CatalogProductItem } from '../Catalog/CatalogProductItem';
+import Loader from '../UI/Loader/Loader';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SearchParamList } from '../../screens/SearchScreenNav';
 
-export const SearchScreen = () => {
+type SearchScreenNavigationProp = NativeStackNavigationProp<
+  SearchParamList,
+  'ProductDetail'
+>;
+
+type Props = {
+  navigation: SearchScreenNavigationProp;
+};
+
+export const SearchScreen = ({ navigation }: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchedProductsList, setSearchedProductsList] = useState<
     IProduct[] | []
@@ -51,21 +69,35 @@ export const SearchScreen = () => {
         />
       </View>
 
-      <View>
+      <View style={{ flex: 1 }}>
         {!searchedProductsList[0] ? (
-          loading ? (
-            <Loader></Loader>
-          ) : (
-            <Text>Начните поиск</Text>
-          )
+          <View style={styles.contentWrapper}>
+            {loading ? (
+              <Loader></Loader>
+            ) : (
+              <Image
+                source={require('../../assets/imgs/search_holder.png')}
+                style={styles.image}
+              />
+            )}
+          </View>
         ) : (
           <FlatList
             data={searchedProductsList}
             columnWrapperStyle={styles.searchedItemsList}
             numColumns={2}
-            renderItem={productData => (
-              <CatalogProductItem data={productData.item} />
-            )}></FlatList>
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('ProductDetail', {
+                    name: item.name,
+                    productData: item,
+                  })
+                }>
+                <CatalogProductItem data={item} />
+              </TouchableOpacity>
+            )}
+          />
         )}
       </View>
     </View>
@@ -74,7 +106,9 @@ export const SearchScreen = () => {
 
 const styles = StyleSheet.create({
   searchScreen: {
+    flex: 1,
     padding: 10,
+    paddingBottom: 0,
   },
   inputWrapper: {
     paddingBottom: 10,
@@ -89,5 +123,13 @@ const styles = StyleSheet.create({
   searchedItemsList: {
     flex: 1,
     justifyContent: 'space-around',
+  },
+  contentWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    alignSelf: 'center',
   },
 });

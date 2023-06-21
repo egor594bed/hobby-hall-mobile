@@ -13,7 +13,7 @@ import { getBasketItems } from '../redux/slices/basket';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import BasketService from '../services/basket-service';
-import { SearchScreen } from './SearchScreen';
+import { SearchScreenNav } from './SearchScreenNav';
 
 export const Navigation = () => {
   const Tab = createBottomTabNavigator();
@@ -102,7 +102,7 @@ export const Navigation = () => {
         />
         <Tab.Screen
           name="Search"
-          component={SearchScreen}
+          component={SearchScreenNav}
           options={{
             ...headerDefaultStyle,
             tabBarBadgeStyle: {
