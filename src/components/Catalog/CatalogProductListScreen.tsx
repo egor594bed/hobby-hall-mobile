@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-import {useHttp} from '../../hooks/http.hook';
-import {IProduct} from '../../types/ICatalog';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CatalogParamList} from '../../screens/CatalogScreenNav';
-import {CatalogProductItem} from './CatalogProductItem';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { useHttp } from '../../hooks/http.hook';
+import { IProduct } from '../../types/ICatalog';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CatalogParamList } from '../../navigation/CatalogScreenNav';
+import { CatalogProductItem } from './CatalogProductItem';
 import Loader from '../UI/Loader/Loader';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
@@ -21,8 +21,8 @@ type Props = {
   };
 };
 
-export const CatalogProductListScreen = ({navigation, route}: Props) => {
-  const {request, loading} = useHttp();
+export const CatalogProductListScreen = ({ navigation, route }: Props) => {
+  const { request, loading } = useHttp();
   const [productList, setProducList] = useState<IProduct[]>();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const CatalogProductListScreen = ({navigation, route}: Props) => {
       columnWrapperStyle={styles.columnWrapperStyle}
       numColumns={2}
       data={productList}
-      renderItem={({item}) => {
+      renderItem={({ item }) => {
         return (
           <TouchableOpacity
             onPress={() =>

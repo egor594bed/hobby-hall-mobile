@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../assets/style/_colors';
 import { HomeHeader } from '../components/Header/HomeHeader';
-import { HomeScreen } from './HomeScreen';
-import { BasketScreen } from './BasketScreen';
+import { HomeScreen } from '../screens/HomeScreen';
+import { BasketScreenNav } from './BasketScreenNav';
 import { CatalogScreenNav } from './CatalogScreenNav';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
 import { ThunkDispatch } from '@reduxjs/toolkit';
@@ -14,15 +14,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import BasketService from '../services/basket-service';
 import { SearchScreenNav } from './SearchScreenNav';
+import { BasketItem } from '../types/IBasket';
 
 export const Navigation = () => {
   const Tab = createBottomTabNavigator();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const basketItemsCounter = useSelector(
-    (state: RootState) => state.basketSlice.basketItems.length,
+    (state: RootState) => state.basketSlice.basketItemsObjs.length,
   );
   const basketItems = useSelector(
-    (state: RootState) => state.basketSlice.basketItems,
+    (state: RootState) => state.basketSlice.basketItemsObjs,
   );
   const updatedFromLocalStorage = useSelector(
     (state: RootState) => state.basketSlice.updatedFromLocalStorage,
@@ -32,9 +33,14 @@ export const Navigation = () => {
     dispatch(getBasketItems());
   }, []);
 
-  //ПРОВЕРИТЬ БУДЕТ ЛИ РАБОТАТЬ ПРИ СМНЕНЕ ТОТАЛА
   useEffect(() => {
-    if (updatedFromLocalStorage) BasketService.saveToAsyncStorage(basketItems);
+    if (updatedFromLocalStorage) {
+      const basketArrForStorage: BasketItem[] = [];
+      for (let i = 0; i < basketItems.length; i++) {
+        basketArrForStorage.push([basketItems[i]._id, basketItems[i].total!]);
+      }
+      BasketService.saveToAsyncStorage(basketArrForStorage);
+    }
   }, [updatedFromLocalStorage, basketItems]);
 
   return (
@@ -87,7 +93,7 @@ export const Navigation = () => {
         />
         <Tab.Screen
           name="Basket"
-          component={BasketScreen}
+          component={BasketScreenNav}
           options={{
             ...headerDefaultStyle,
             tabBarBadge:
@@ -96,8 +102,8 @@ export const Navigation = () => {
               backgroundColor: colors.firstColor,
               color: colors.secondColor,
             },
+            headerShown: false,
             tabBarLabel: 'Корзина',
-            headerTitle: 'Корзина',
           }}
         />
         <Tab.Screen
@@ -109,8 +115,8 @@ export const Navigation = () => {
               backgroundColor: colors.firstColor,
               color: colors.secondColor,
             },
+            headerShown: false,
             tabBarLabel: 'Поиск',
-            headerTitle: 'Поиск',
           }}
         />
       </Tab.Navigator>

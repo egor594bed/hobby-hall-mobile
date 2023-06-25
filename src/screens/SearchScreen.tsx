@@ -7,13 +7,14 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { colors } from '../../assets/style/_colors';
-import { useHttp } from '../../hooks/http.hook';
-import { IProduct } from '../../types/ICatalog';
-import { CatalogProductItem } from '../Catalog/CatalogProductItem';
-import Loader from '../UI/Loader/Loader';
+import { colors } from '../assets/style/_colors';
+import { useHttp } from '../hooks/http.hook';
+import { IProduct } from '../types/ICatalog';
+import { CatalogProductItem } from '../components/Catalog/CatalogProductItem';
+import Loader from '../components/UI/Loader/Loader';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SearchParamList } from '../../screens/SearchScreenNav';
+import { SearchParamList } from '../navigation/SearchScreenNav';
+import { defaultScreenStyle } from '../assets/style/_defaultScreen';
 
 type SearchScreenNavigationProp = NativeStackNavigationProp<
   SearchParamList,
@@ -76,7 +77,7 @@ export const SearchScreen = ({ navigation }: Props) => {
               <Loader></Loader>
             ) : (
               <Image
-                source={require('../../assets/imgs/search_holder.png')}
+                source={require('../assets/imgs/search_holder.png')}
                 style={styles.image}
               />
             )}
@@ -106,8 +107,8 @@ export const SearchScreen = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   searchScreen: {
+    ...defaultScreenStyle,
     flex: 1,
-    padding: 10,
     paddingBottom: 0,
   },
   inputWrapper: {

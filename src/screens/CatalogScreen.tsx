@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { CatalogCategoryItem } from './CatalogCategoryItem';
+import { CatalogCategoryItem } from '../components/Catalog/CatalogCategoryItem';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CatalogParamList } from '../../screens/CatalogScreenNav';
-import { useHttp } from '../../hooks/http.hook';
-import { ICategory, ISubCategory } from '../../types/ICatalog';
-import Loader from '../UI/Loader/Loader';
+import { CatalogParamList } from '../navigation/CatalogScreenNav';
+import { useHttp } from '../hooks/http.hook';
+import { ICategory, ISubCategory } from '../types/ICatalog';
+import Loader from '../components/UI/Loader/Loader';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
   CatalogParamList,

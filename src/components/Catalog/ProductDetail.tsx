@@ -10,12 +10,12 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppDispatch, RootState } from '../../redux/store';
-import { CatalogParamList } from '../../screens/CatalogScreenNav';
+import { CatalogParamList } from '../../navigation/CatalogScreenNav';
 import Loader from '../UI/Loader/Loader';
-import BasketService from '../../services/basket-service';
-import { toggleBasketItem } from '../../redux/slices/basket';
+import { getNewBasketItem, removeBasketItem } from '../../redux/slices/basket';
 import { colors } from '../../assets/style/_colors';
 import { IProduct } from '../../types/ICatalog';
+import BasketService from '../../services/basket-service';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
   CatalogParamList,
@@ -35,17 +35,25 @@ export const ProductDetail = ({ route, navigation }: Props) => {
   const inBasket = useSelector((state: RootState) => {
     if (!productData?._id) return false;
     return BasketService.inBasket(
-      state.basketSlice.basketItems,
+      state.basketSlice.basketItemsObjs,
       productData?._id,
     );
   });
+  const reduxLoading = useSelector(
+    (state: RootState) => state.basketSlice.loading,
+  );
   const dispatch = useDispatch<AppDispatch>();
 
+  //Добавить пендинг
+
   const toggleBasketHendler = useCallback(async () => {
-    if (productData?._id) {
-      dispatch(toggleBasketItem(productData._id));
+    if (!productData?._id) return;
+    if (inBasket) {
+      dispatch(removeBasketItem(productData._id));
+    } else {
+      dispatch(getNewBasketItem(productData._id));
     }
-  }, [productData]);
+  }, [productData, inBasket]);
 
   useEffect(() => {
     if (route.params?.productData) setProductData(route.params.productData);
@@ -69,6 +77,7 @@ export const ProductDetail = ({ route, navigation }: Props) => {
           <Button
             title={inBasket ? 'Удалить из корзины' : 'Добавить в корзину'}
             color={colors.secondColor}
+            disabled={reduxLoading}
             onPress={() => toggleBasketHendler()}
           />
         </View>
