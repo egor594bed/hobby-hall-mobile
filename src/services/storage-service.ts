@@ -4,7 +4,6 @@ class StorageService {
   async getStorage(key: string) {
     try {
       let jsonValue = await AsyncStorage.getItem(key).then(data => {
-        console.log('АСИНК СТОРАГЕ: ' + data);
         return data;
       });
 

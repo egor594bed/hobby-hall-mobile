@@ -83,10 +83,10 @@ export const basketSlice = createSlice({
     });
 
     builder.addCase(getBasketItems.fulfilled, (state, action) => {
-      console.log('В ЭКШНЖ ' + action.payload);
       if (action.payload === null || action.payload === undefined) {
         state.basketItemsObjs = [];
         state.updatedFromLocalStorage = true;
+        state.loading = false;
         return;
       }
 
@@ -113,10 +113,11 @@ export const basketSlice = createSlice({
 
     builder.addCase(getNewBasketItem.fulfilled, (state, action) => {
       if (action.payload === null || action.payload === undefined) {
+        state.loading = false;
         return;
       }
 
-      const basketItem = action.payload;
+      const basketItem: IProduct = action.payload;
       basketItem.total = 1;
 
       state.basketItemsObjs = [...state.basketItemsObjs, basketItem];

@@ -15,7 +15,7 @@ interface IBasketCounter {
 
 export const BasketCounter: FC<IBasketCounter> = ({ changeTotal, value }) => {
   const inputChangeHandler = (value: string) => {
-    if (Number(value) < 0) return;
+    if (Number(value) < 1) return;
     if (/^-?\d+\.?\d*$/.test(value)) {
       changeTotal(value);
     } else if (value === '') {

@@ -39,10 +39,6 @@ export const BasketItem: FC<IBasketItem> = ({
     );
   };
 
-  useEffect(() => {
-    console.log(productData);
-  }, [productData.total]);
-
   if (layout.width < 1) {
     return <></>;
   }

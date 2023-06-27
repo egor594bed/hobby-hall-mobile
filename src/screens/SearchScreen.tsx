@@ -26,17 +26,11 @@ type Props = {
 };
 
 export const SearchScreen = ({ navigation }: Props) => {
-  const [searchValue, setSearchValue] = useState('');
   const [searchedProductsList, setSearchedProductsList] = useState<
     IProduct[] | []
   >([]);
   const { request, loading } = useHttp();
   const searchDelay = useRef<number | null>(null);
-
-  const searchHandler = (value: string) => {
-    setSearchValue(value);
-    getSearchedProducts(value);
-  };
 
   const getSearchedProducts = useCallback(
     (value: string) => {
@@ -63,8 +57,7 @@ export const SearchScreen = ({ navigation }: Props) => {
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
-          value={searchValue}
-          onChangeText={value => searchHandler(value)}
+          onChangeText={value => getSearchedProducts(value)}
           placeholder="Поиск"
           placeholderTextColor={colors.secondColor}
         />
