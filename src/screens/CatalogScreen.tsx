@@ -47,8 +47,8 @@ export const CatalogScreen = ({ navigation, route }: Props) => {
   });
 
   useEffect(() => {
-    if (!burgerIsOpen) offset.value = 0;
-    else offset.value = -100;
+    if (!burgerIsOpen) offset.value = -100;
+    else offset.value = 0;
   }, [burgerIsOpen]);
 
   if (route.params?.subCategories) {
