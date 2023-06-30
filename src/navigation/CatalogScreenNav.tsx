@@ -1,11 +1,12 @@
 import React from 'react';
 import { IProduct, ISubCategory } from '../types/ICatalog';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CatalogScreen } from '../screens/CatalogScreen';
 import { CatalogProductListScreen } from '../components/Catalog/CatalogProductListScreen';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { Text } from 'react-native';
+import { Burger } from '../components/UI/Burger/Burger';
 
 export type CatalogParamList = {
   CatalogScreen: undefined;
@@ -25,6 +26,7 @@ export const CatalogScreenNav = () => {
         options={{
           ...headerDefaultStyle,
           headerTitle: 'Каталог',
+          headerRight: () => <Burger />,
         }}
       />
       <Catalog.Screen
@@ -33,6 +35,8 @@ export const CatalogScreenNav = () => {
         options={({ route }) => ({
           ...headerDefaultStyle,
           title: route.params.parentName,
+
+          headerRight: () => <Burger />,
         })}
       />
       <Catalog.Screen
