@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface ToastsSlice {
   burgerState: boolean;
+  filterState: boolean;
 }
 
 const initialState: ToastsSlice = {
   burgerState: false,
+  filterState: false,
 };
 
 export const CatalogSlice = createSlice({
@@ -15,9 +17,12 @@ export const CatalogSlice = createSlice({
     toggleBurger: state => {
       state.burgerState = !state.burgerState;
     },
+    toggleFilter: state => {
+      state.filterState = !state.filterState;
+    },
   },
 });
 
-export const { toggleBurger } = CatalogSlice.actions;
+export const { toggleBurger, toggleFilter } = CatalogSlice.actions;
 
 export default CatalogSlice.reducer;

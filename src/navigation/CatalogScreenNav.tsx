@@ -8,6 +8,7 @@ import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
 import { Text } from 'react-native';
 import { Burger } from '../components/UI/Burger/Burger';
 import textCutter from '../utils/textCutter';
+import { Filter } from '../components/UI/Filter/Filter';
 
 export type CatalogParamList = {
   CatalogScreen: undefined;
@@ -46,6 +47,7 @@ export const CatalogScreenNav = () => {
         options={({ route }) => ({
           ...headerDefaultStyle,
           title: textCutter(route.params.parentName, 25),
+          headerRight: () => <Filter />,
         })}
       />
       <Catalog.Screen
