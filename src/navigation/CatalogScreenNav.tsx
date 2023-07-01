@@ -7,6 +7,7 @@ import { ProductDetail } from '../components/Catalog/ProductDetail';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
 import { Text } from 'react-native';
 import { Burger } from '../components/UI/Burger/Burger';
+import textCutter from '../utils/textCutter';
 
 export type CatalogParamList = {
   CatalogScreen: undefined;
@@ -34,7 +35,7 @@ export const CatalogScreenNav = () => {
         component={CatalogScreen}
         options={({ route }) => ({
           ...headerDefaultStyle,
-          title: route.params.parentName,
+          title: textCutter(route.params.parentName, 20),
 
           headerRight: () => <Burger />,
         })}
@@ -44,7 +45,7 @@ export const CatalogScreenNav = () => {
         component={CatalogProductListScreen}
         options={({ route }) => ({
           ...headerDefaultStyle,
-          title: route.params.parentName,
+          title: textCutter(route.params.parentName, 25),
         })}
       />
       <Catalog.Screen
@@ -52,7 +53,7 @@ export const CatalogScreenNav = () => {
         component={ProductDetail}
         options={({ route }) => ({
           ...headerDefaultStyle,
-          title: route.params.name,
+          title: textCutter(route.params.name, 25),
         })}
       />
     </Catalog.Navigator>

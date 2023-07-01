@@ -6,6 +6,7 @@ import { Test } from '../components/Test';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
 import { IProduct } from '../types/ICatalog';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
+import textCutter from '../utils/textCutter';
 
 export type BasketParamList = {
   BasketScreen: undefined;
@@ -31,7 +32,7 @@ export const BasketScreenNav = () => {
         component={ProductDetail}
         options={({ route }) => ({
           ...headerDefaultStyle,
-          title: route.params.name,
+          title: textCutter(route.params.name, 25),
         })}
       />
       <Basket.Screen

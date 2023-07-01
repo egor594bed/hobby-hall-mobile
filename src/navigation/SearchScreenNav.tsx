@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
 import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
 import { SearchScreen } from '../screens/SearchScreen';
+import textCutter from '../utils/textCutter';
 
 export type SearchParamList = {
   SearchScreen: undefined;
@@ -28,7 +29,7 @@ export const SearchScreenNav = () => {
         component={ProductDetail}
         options={({ route }) => ({
           ...headerDefaultStyle,
-          title: route.params.name,
+          title: textCutter(route.params.name, 25),
         })}
       />
     </Search.Navigator>
