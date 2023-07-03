@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  View,
+} from 'react-native';
 import { CatalogCategoryItem } from '../components/Catalog/CatalogCategoryItem';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CatalogParamList } from '../navigation/CatalogScreenNav';
@@ -15,6 +21,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { colors } from '../assets/style/_colors';
 import { CatalogBurgerItem } from '../components/Catalog/CatalogBurgerItem';
+import { scrollScreenDefault } from '../assets/style/_scrollScreenDefault';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
   CatalogParamList,
@@ -33,7 +40,7 @@ type Props = {
 export const CatalogScreen = ({ navigation, route }: Props) => {
   const { request, loading } = useHttp();
   const [catalogList, setCatalogList] = useState<
-    ICategory[] | ISubCategory[]
+    ICategory[] | ISubCategory[] | undefined
   >();
   const burgerIsOpen = useSelector(
     (state: RootState) => state.catalogSlice.burgerState,
@@ -100,31 +107,34 @@ export const CatalogScreen = ({ navigation, route }: Props) => {
           }}
         />
       </Animated.View>
-
-      <FlatList
-        columnWrapperStyle={styles.columnWrapperStyle}
-        numColumns={2}
-        data={catalogList}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              key={`catalogItem${item._id}`}
-              onPress={() =>
-                item.subCategories
-                  ? navigation.navigate('SubCategories', {
-                      parentName: item.name,
-                      subCategories: item.subCategories,
-                    })
-                  : navigation.navigate('Products', {
-                      parentName: item.name,
-                      subCategoryId: item._id,
-                    })
-              }>
-              <CatalogCategoryItem data={item}></CatalogCategoryItem>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <View style={scrollScreenDefault}>
+        <FlatList
+          //Пофиксить центрирование скролла и можно включать скролл
+          showsVerticalScrollIndicator={false}
+          columnWrapperStyle={styles.columnWrapperStyle}
+          numColumns={2}
+          data={catalogList}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                key={`catalogItem${item._id}`}
+                onPress={() =>
+                  item.subCategories
+                    ? navigation.navigate('SubCategories', {
+                        parentName: item.name,
+                        subCategories: item.subCategories,
+                      })
+                    : navigation.navigate('Products', {
+                        parentName: item.name,
+                        subCategoryId: item._id,
+                      })
+                }>
+                <CatalogCategoryItem data={item}></CatalogCategoryItem>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
     </>
   );
 };
@@ -132,7 +142,7 @@ export const CatalogScreen = ({ navigation, route }: Props) => {
 const styles = StyleSheet.create({
   columnWrapperStyle: {
     flex: 1,
-    justifyContent: 'space-around',
+    gap: 20,
   },
   burger: {
     width: '100%',

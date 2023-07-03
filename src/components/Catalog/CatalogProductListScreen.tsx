@@ -18,8 +18,9 @@ import {
   filterMethodList,
 } from '../../assets/const/filterMethodList';
 import { FilterItem } from '../UI/Filter/FilterItem';
-import catalogSortService from '../../services/sort/catalog-sort-service';
+import CatalogSortService from '../../services/sort/catalog-sort-service';
 import { colors } from '../../assets/style/_colors';
+import { scrollScreenDefault } from '../../assets/style/_scrollScreenDefault';
 
 type CatalogScreenNavigationProp = NativeStackNavigationProp<
   CatalogParamList,
@@ -50,10 +51,14 @@ export const CatalogProductListScreen = ({ navigation, route }: Props) => {
     };
   });
 
-  const filterHandler = useCallback((method: FilterTypes) => {
-    //ДОДЕЛАТЬ ФИЛЬТР
-    console.log(method);
-  }, []);
+  const filterHandler = useCallback(
+    (method: FilterTypes) => {
+      if (!productList) return;
+      const sortedGoods = CatalogSortService.sortGoods(productList, method);
+      setProducList([...sortedGoods]);
+    },
+    [productList],
+  );
 
   useEffect(() => {
     if (!filterIsOpen) offset.value = -100;
@@ -74,15 +79,18 @@ export const CatalogProductListScreen = ({ navigation, route }: Props) => {
   }
 
   return (
-    <>
+    <View style={scrollScreenDefault}>
       <Animated.View style={[styles.filterWrapper, animatedStyles]}>
         <FlatList
           data={filterMethodList}
           renderItem={({ item }) => (
             <FilterItem item={item} filterHandler={filterHandler} />
-          )}></FlatList>
+          )}
+        />
       </Animated.View>
       <FlatList
+        //Пофиксить центрирование скролла и можно включать скролл
+        showsVerticalScrollIndicator={false}
         columnWrapperStyle={styles.columnWrapperStyle}
         numColumns={2}
         data={productList}
@@ -100,14 +108,14 @@ export const CatalogProductListScreen = ({ navigation, route }: Props) => {
           );
         }}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   columnWrapperStyle: {
     flex: 1,
-    justifyContent: 'space-around',
+    gap: 20,
   },
   filterWrapper: {
     backgroundColor: colors.secondColor,
