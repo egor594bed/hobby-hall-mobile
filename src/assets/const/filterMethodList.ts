@@ -1,10 +1,11 @@
-export type FilterTypes = 'stock' | 'price' | 'alphabet';
+// export type FilterTypes = 'stock' | 'price' | 'alphabet';
+export type FilterTypes = (typeof filterMethodList)[number]['method'];
 export type FilterTypeObj = {
   name: string;
   method: FilterTypes;
 };
 
-export const filterMethodList: FilterTypeObj[] = [
+export const filterMethodList = [
   {
     name: 'По наличию',
     method: 'stock',
@@ -17,4 +18,4 @@ export const filterMethodList: FilterTypeObj[] = [
     name: 'По алфавиту',
     method: 'alphabet',
   },
-];
+] as const;
