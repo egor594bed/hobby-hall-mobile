@@ -2,7 +2,7 @@ import React from 'react';
 import { IProduct } from '../types/ICatalog';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
-import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { headerDefaultStyle } from '../assets/style/_headerDefaultStyle';
 import { SearchScreen } from '../screens/SearchScreen';
 import textCutter from '../utils/textCutter';
 

@@ -19,14 +19,10 @@ export const Burger = () => {
   const translate = useSharedValue(0);
   const opacity = useSharedValue(1);
 
-  //разобраться с TS
-
-  const topSliceAnimatedStyles = useAnimatedStyle(() => {
+  const topSliceAnimatedStyles = useAnimatedStyle<any>(() => {
     return {
       transform: [
-        {
-          rotate: withSpring(rotate.value),
-        },
+        { rotate: withSpring(rotate.value) },
         { translateY: withSpring(translate.value) },
       ],
     };
@@ -36,12 +32,10 @@ export const Burger = () => {
       opacity: withSpring(opacity.value),
     };
   });
-  const bottomSliceAnimatedStyles = useAnimatedStyle(() => {
+  const bottomSliceAnimatedStyles = useAnimatedStyle<any>(() => {
     return {
       transform: [
-        {
-          rotate: withSpring('-' + rotate.value),
-        },
+        { rotate: withSpring('-' + rotate.value) },
         { translateY: withSpring(Number('-' + translate.value)) },
       ],
     };
@@ -53,7 +47,7 @@ export const Burger = () => {
       opacity.value = 0;
       translate.value = 11;
     } else {
-      rotate.value = '0';
+      rotate.value = '0deg';
       opacity.value = 1;
       translate.value = 0;
     }

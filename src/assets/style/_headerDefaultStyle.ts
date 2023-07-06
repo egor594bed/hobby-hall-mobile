@@ -1,4 +1,4 @@
-import {colors} from '../style/_colors';
+import { colors } from './_colors';
 
 export const headerDefaultStyle = {
   headerStyle: {

@@ -7,7 +7,7 @@ import { HomeHeader } from '../components/Header/HomeHeader';
 import { HomeScreen } from '../screens/HomeScreen';
 import { BasketScreenNav } from './BasketScreenNav';
 import { CatalogScreenNav } from './CatalogScreenNav';
-import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { headerDefaultStyle } from '../assets/style/_headerDefaultStyle';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { getBasketItems } from '../redux/slices/basket';
 import { useDispatch, useSelector } from 'react-redux';

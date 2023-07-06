@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CatalogScreen } from '../screens/CatalogScreen';
 import { CatalogProductListScreen } from '../components/Catalog/CatalogProductListScreen';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
-import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { headerDefaultStyle } from '../assets/style/_headerDefaultStyle';
 import { Text } from 'react-native';
 import { Burger } from '../components/UI/Burger/Burger';
 import textCutter from '../utils/textCutter';

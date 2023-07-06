@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BasketScreen } from '../screens/BasketScreen';
 import { Test } from '../components/Test';
-import { headerDefaultStyle } from '../assets/const/headerDefaultStyle';
+import { headerDefaultStyle } from '../assets/style/_headerDefaultStyle';
 import { IProduct } from '../types/ICatalog';
 import { ProductDetail } from '../components/Catalog/ProductDetail';
 import textCutter from '../utils/textCutter';
