@@ -13,8 +13,8 @@ export const CatalogCategoryItem: FC<CatalogCategoryItem> = ({ data }) => {
       <Image
         source={{
           uri: `https://hobby-hall.onrender.com/${data.imgSrc}`,
-          height: 150,
-          width: 150,
+          height: 140,
+          width: 140,
         }}
       />
       {/* <Text style={styles.text}>{data.name}</Text> */}
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   catalogItem: {
     width: 150,
     // height: 230,
+    paddingHorizontal: 2,
     paddingBottom: 5,
     marginVertical: 10,
     borderColor: colors.secondColor,
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: 'hidden',
     backgroundColor: 'white',
+    alignItems: 'center',
   },
   text: {
     color: colors.secondColor,
